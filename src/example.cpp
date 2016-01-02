@@ -17,13 +17,19 @@ int main() {
 	});
 	er.emit("ev"); // Like this!
 
+	er.on("ev", [](){
+		cout << "EV! SECOND!" << endl; 
+	});
+
 	// A timed event will be called in multiples of the Eventer timeout
-	er.on("ev-timed", [](){
+	er.on("ev-timed", [&er](){
 		cout << "EV TIMED!" << endl;
+		er.emit("ev");
 	}, 2); // This will be called every ~4000ms
 	
 	while (true) { // Just a sleep to watch the timed events :)
 		this_thread::sleep_for(chrono::milliseconds(10));
+		er.tick();
 	}
 	return 0;
 }

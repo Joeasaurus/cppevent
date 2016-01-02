@@ -9,7 +9,7 @@ class TimedEvent : public Event {
 	public:
 		short frequency;
 
-		TimedEvent(short freq, function<void()>& func) : Event(func), frequency(freq) {};
+		TimedEvent(short freq, function<void()>&& func) : Event(func), frequency(freq) {};
 		bool shouldCall() {
 			this->_freqCount += 1;
 			if (this->_freqCount == this->frequency) {
