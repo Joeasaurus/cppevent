@@ -18,7 +18,7 @@ endif()
 
 include_directories(AFTER
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_SOURCE_DIR}/include/readerwriterqueue"
+    "${CMAKE_SOURCE_DIR}/submodules/readerwriterqueue"
     "${CMAKE_BINARY_DIR}/generated"
 )
 
