@@ -1,6 +1,6 @@
 # Tested on G++ 5.2.0
-cmake_minimum_required(VERSION 3.2)
-project(cppevent)
+cmake_minimum_required(VERSION 2.8)
+project(cppevent-example)
 #find_package(PkgConfig)
 
 set(CMAKE_VERBOSE_MAKEFILE false)
@@ -19,13 +19,12 @@ endif()
 include_directories(AFTER
     "${CMAKE_SOURCE_DIR}/include"
     "${CMAKE_SOURCE_DIR}/submodules/readerwriterqueue"
-    "${CMAKE_BINARY_DIR}/generated"
 )
 
-add_library(cppevent SHARED
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Eventer.cpp
+add_executable(cppevent-example
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/example.cpp
 )
 
-target_link_libraries(cppevent
+target_link_libraries(cppevent-example
     -lpthread
 )
