@@ -10,30 +10,29 @@
 
 #include "Event.hpp"
 #include "TimedEvent.hpp"
+#include "EventMap.hpp"
 #include "readerwriterqueue.h"
 
 using namespace std;
 using namespace moodycamel;
 
-class Eventer {
-	public:
-		Eventer(const int resolution = 1000);
+namespace cppevent {
+	class Eventer {
+		public:
+			Eventer(const int resolution = 1000);
 
-		void on(string title, function<void()> callback);
-		void on(string title, function<void()> callback, short freq);
-		void emit(string title, bool timed = false);
-		void tick();
-	private:
-		map<string, vector<Event>> _events;
-		map<string, vector<TimedEvent>> _timedEvents;
+			bool on(string title, function<void()> callback, EventPriority priority = EventPriority::MID);
+			bool on(string title, function<void()> callback, short freq, EventPriority priority = EventPriority::MID);
+			void emit(string title);
+			void tick();
+		private:
+			EventMap<Event> _events;
+			EventMap<TimedEvent> _timedEvents;
+			ReaderWriterQueue<function<void()>> _tickQueue;
 
-		atomic<int> _timerResolution;
-		ReaderWriterQueue<function<void()>> _timedEventQueue;
+			atomic<int> _timerResolution;
 
-		void _createTimerThread();
-		void _emitTimedEvents();
-		void _callEvents(string title);
-		void _callTimedEvents(string title);
-		bool _eventExists(string title);
-		bool _timedEventExists(string title);
-};
+			void _createTimerThread();
+			void _emitTimedEvents();
+	};
+}
