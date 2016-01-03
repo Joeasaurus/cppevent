@@ -8,12 +8,12 @@
 namespace cppevent {
 	template<class T> class EventMap {
 		public:
-			bool has(string title);
-			bool has(string title, EventPriority priority);
+			inline bool has(string title);
+			inline bool has(string title, EventPriority priority);
 
-			bool insert(string title, T event, EventPriority priority = EventPriority::MID);
-			void call(string title, EventPriority priority = EventPriority::MID);
-			void call(EventPriority priority = EventPriority::MID);
+			inline bool insert(string title, T event, EventPriority priority = EventPriority::MID);
+			inline void call(string title, EventPriority priority = EventPriority::MID);
+			inline void call(EventPriority priority = EventPriority::MID);
 
 		private:
 			map<string, vector<T>> _events_high;

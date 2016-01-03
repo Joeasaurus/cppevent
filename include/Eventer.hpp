@@ -19,12 +19,12 @@ using namespace moodycamel;
 namespace cppevent {
 	class Eventer {
 		public:
-			Eventer(const int resolution = 1000);
+			inline Eventer(const int resolution = 1000);
 
-			bool on(string title, function<void()> callback, EventPriority priority = EventPriority::MID);
-			bool on(string title, function<void()> callback, short freq, EventPriority priority = EventPriority::MID);
-			void emit(string title);
-			void tick();
+			inline bool on(string title, function<void()> callback, EventPriority priority = EventPriority::MID);
+			inline bool on(string title, function<void()> callback, short freq, EventPriority priority = EventPriority::MID);
+			inline void emit(string title);
+			inline void tick();
 		private:
 			EventMap<Event> _events;
 			EventMap<TimedEvent> _timedEvents;
@@ -32,8 +32,8 @@ namespace cppevent {
 
 			atomic<int> _timerResolution;
 
-			void _createTimerThread();
-			void _emitTimedEvents();
+			inline void _createTimerThread();
+			inline void _emitTimedEvents();
 	};
 
 	Eventer::Eventer(const int resolution) {
@@ -55,7 +55,6 @@ namespace cppevent {
 	void Eventer::_createTimerThread() {
 		thread([&]() {
 			this_thread::sleep_for(chrono::milliseconds(_timerResolution.load()));
-			cout << "Timer Expired!" << endl;
 			_emitTimedEvents();
 			_createTimerThread();
 		}).detach();
