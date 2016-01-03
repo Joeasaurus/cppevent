@@ -18,7 +18,6 @@ endif()
 
 include_directories(AFTER
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_SOURCE_DIR}/submodules/readerwriterqueue"
 )
 
 add_executable(cppevent-example

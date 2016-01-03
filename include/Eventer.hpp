@@ -11,7 +11,7 @@
 #include "Event.hpp"
 #include "TimedEvent.hpp"
 #include "EventMap.hpp"
-#include "readerwriterqueue.h"
+#include "readerwriterqueue/queue.h"
 
 using namespace std;
 using namespace moodycamel;
