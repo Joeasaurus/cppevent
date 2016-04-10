@@ -1,3 +1,0 @@
-[submodule "include/readerwriterqueue"]
-	path = include/readerwriterqueue
-	url = https://github.com/cameron314/readerwriterqueue.git
