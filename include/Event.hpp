@@ -6,10 +6,13 @@
 using namespace std;
 
 namespace cppevent {
+	template <class T>
 	class Event {
 		public:
-			Event(function<void()>& func) : callback(func) {};
-			function<void()> callback;
-			virtual bool shouldCall() {return true;};
+			Event(function<T()> func) : callback(func){};
+			virtual void call(){callback();};
+		private:
+			function<T()> callback;
 	};
+
 }

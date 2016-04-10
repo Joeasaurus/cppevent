@@ -4,22 +4,30 @@
 #include "Event.hpp"
 
 using namespace std;
+using namespace std::chrono;
 
 namespace cppevent {
-	class TimedEvent : public Event {
+	class TimedEvent {
 		public:
-			short frequency;
+			TimedEvent(milliseconds intv, function<void(milliseconds)> func) : interval(intv), callback(func) {
+				lastTime = system_clock::now();
+			};
 
-			TimedEvent(short freq, function<void()>&& func) : Event(func), frequency(freq) {};
-			bool shouldCall() {
-				this->_freqCount += 1;
-				if (this->_freqCount == this->frequency) {
-					this->_freqCount = 0;
-					return true;
+			void call() {
+				auto timenow = system_clock::now();
+				auto newDelta = duration_cast<milliseconds>(timenow - lastTime);
+
+				lastTime += newDelta;
+				delta += newDelta;
+				if (delta >= interval) {
+					callback(delta);
+					delta = milliseconds(0);
 				}
-				return false;
 			};
 		private:
-			short _freqCount = 0;
+			milliseconds delta;
+			milliseconds interval;
+			system_clock::time_point lastTime;
+			function<void(milliseconds)> callback;
 	};
 }

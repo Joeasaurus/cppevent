@@ -8,37 +8,34 @@ using namespace cppevent;
 
 int main() {
 	// Create an Eventer that we can submit callbacks to.
-	// Default timout is 1000ms but you can pass any you like.
-	Eventer er(2000);
+	Eventer er;
 
 	// You may name your event aribitrarily. "ev" is just easy to type :)
 	// A standard .on() event will be called when it's emitted
-	er.on("ev", [](){
-		cout << "EV!" << endl; 
+	er.on("ev", []{
+		cout << "EV!" << endl << endl; 
 	});
 	er.emit("ev"); // Like this!
 
 	// You can set priority on your events. Default is MID.
 	// HIGH events happen before MID, which happen before LOW events.
-	er.on("ev", [](){
-		cout << "EV! SECOND!" << endl; 
+	er.on("ev", []{
+		cout << "EV SECOND!" << endl; 
 	}, EventPriority::HIGH);
 
-	// A timed event will be called in multiples of the Eventer timeout
-	// Events are queued on call, you can tick() through them when ready 
-	er.on("ev-timed", [&er](){
+	er.on("ev-timed", [&er](chrono::milliseconds delta){
 		cout << "EV TIMED!" << endl;
 		er.emit("ev");
-	}, 2); // This will be called every ~4000ms
+	}, chrono::milliseconds(2000));
 
 	// You can also set priority on timed events.
-	er.on("ev-timed", [&er](){
+	er.on("ev-timed", [&er](chrono::milliseconds delta){
 		cout << "EV TIMED HIGH!" << endl;
-	}, 2, EventPriority::HIGH);
+	}, chrono::milliseconds(2000), EventPriority::HIGH);
 	
 	while (true) { // Just a sleep to watch the timed events :)
 		this_thread::sleep_for(chrono::milliseconds(10));
-		er.tick();
+		er.emitTimedEvents();
 	}
 	return 0;
 }

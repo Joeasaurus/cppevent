@@ -11,7 +11,7 @@ namespace cppevent {
 			inline bool has(string title);
 			inline bool has(string title, EventPriority priority);
 
-			inline bool insert(string title, T event, EventPriority priority = EventPriority::MID);
+			inline bool insert(string title, T& event, EventPriority priority = EventPriority::MID);
 			inline void call(string title, EventPriority priority = EventPriority::MID);
 			inline void call(EventPriority priority = EventPriority::MID);
 
@@ -41,10 +41,12 @@ namespace cppevent {
 	 * Perhaps we can add removal support by returning unique position data?
 	 */
 	template<class T>
-	bool EventMap<T>::insert(string title, T event, EventPriority priority) {
+	bool EventMap<T>::insert(string title, T& event, EventPriority priority) {
 		auto& events = _getEventsByPriority(priority);
 		try {
 			if (has(title, priority)) {
+				cout << "HAS" << endl;
+				return true;
 				events[title].push_back(event);
 			} else {
 				events.insert(make_pair(title, vector<T>(1, event)));
@@ -61,8 +63,7 @@ namespace cppevent {
 		auto& events = _getEventsByPriority(priority);
 		if (has(title, priority)) {
 			for (auto& ev : events[title]) {
-				if (ev.shouldCall()) 
-					ev.callback();
+				ev.call();
 			}
 		}
 	}
