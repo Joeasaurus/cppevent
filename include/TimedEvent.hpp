@@ -25,8 +25,8 @@ namespace cppevent {
 				}
 			};
 		private:
-			milliseconds delta;
-			milliseconds interval;
+			milliseconds delta{0};
+			milliseconds interval{1000};
 			system_clock::time_point lastTime;
 			function<void(milliseconds)> callback;
 	};
